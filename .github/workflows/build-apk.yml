@@ -124,7 +124,7 @@ jobs:
           cd rust
           cargo ndk \
             -t arm64-v8a \
-            -p "${ANDROID_API_LEVEL}" \
+            --platform "${ANDROID_API_LEVEL}" \
             -o ../app/src/main/jniLibs \
             build --release
 
