@@ -601,7 +601,7 @@ impl AudioEngine {
                 if step >= k {
                     let cond_l = step_logits[k].i(0)?;
                     let uncond_l = step_logits[k].i(1)?;
-                    let guided = ((&uncond_l + ((&cond_l - &uncond_l)? * cfg_scale)?)?)?;
+                    let guided = (&uncond_l + ((&cond_l - &uncond_l)? * cfg_scale)?)?;
                     let sampled = logits_processor.sample(&guided)?;
                     delay_grid[k][step + 1] = sampled;
                 } else {
