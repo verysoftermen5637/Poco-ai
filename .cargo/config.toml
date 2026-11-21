@@ -1,0 +1,28 @@
+# Aggressive ARMv9.2 / Dimensity 9500s (1x Cortex-X925 + 3x Cortex-X4 + 4x Cortex-A720)
+# compiler & linker configuration for Android 16 (API 36) / HyperOS 3.
+#
+# Notes on SIGILL prevention (NDK r27/r28 LLVM):
+# - +neon, +dotprod, +i8mm, +fp16 are hardware-supported across all 8 cores of Dimensity 9500s
+#   and match Arm KleidiAI microkernels without emitting SVE2 instructions that can SIGILL
+#   under restricted mobile kernel signal/FPSIMD contexts.
+# - -Wl,-z,max-page-size=16384 enforces 16 KB ELF LOAD segment alignment required on Android 15/16.
+
+[target.aarch64-linux-android]
+rustflags = [
+    "-C", "target-feature=+neon,+dotprod,+i8mm,+fp16",
+    "-C", "link-arg=-Wl,-z,max-page-size=16384",
+    "-C", "link-arg=-Wl,-z,common-page-size=16384",
+    "-C", "link-arg=-Wl,--gc-sections",
+]
+
+[env]
+GGML_CPU_KLEIDIAI = "ON"
+GGML_CPU_ARM_ARCH = "armv8.2-a+dotprod+i8mm+fp16"
+GGML_NATIVE = "OFF"
+GGML_VULKAN = "OFF"
+GGML_OPENCL = "OFF"
+GGML_CUDA = "OFF"
+GGML_METAL = "OFF"
+GGML_SYCL = "OFF"
+GGML_HIP = "OFF"
+GGML_MUSA = "OFF"

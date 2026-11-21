@@ -1,0 +1,10 @@
+*.iml
+.gradle/
+.idea/
+local.properties
+app/build/
+build/
+rust/target/
+third_party/
+app/src/main/jniLibs/
+.DS_Store
