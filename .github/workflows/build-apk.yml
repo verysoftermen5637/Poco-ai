@@ -75,20 +75,20 @@ jobs:
           key: ${{ runner.os }}-cargo-arm64-${{ hashFiles('rust/**/Cargo.toml', '.cargo/config.toml') }}
 
       - name: Cache stable-diffusion.cpp build
-     id: cache-sd
-     uses: actions/cache@v4
-     with:
-       path: third_party/stable-diffusion.cpp
-       key: ${{ runner.os }}-sd-cpp-arm64-${{ env.SD_CPP_COMMIT }}
+        id: cache-sd
+        uses: actions/cache@v4
+        with:
+          path: third_party/stable-diffusion.cpp
+          key: ${{ runner.os }}-sd-cpp-arm64-${{ env.SD_CPP_COMMIT }}
 
-   - name: Clone & build stable-diffusion.cpp (CPU-only, KleidiAI, ARMv9.2 SIMD)
-     if: steps.cache-sd.outputs.cache-hit != 'true'
-     run: |
-       mkdir -p third_party
-       git clone --recursive https://github.com/leejet/stable-diffusion.cpp.git third_party/stable-diffusion.cpp
-       cd third_party/stable-diffusion.cpp
-       git checkout "${SD_CPP_COMMIT}" || true
-       git submodule update --init --recursive
+      - name: Clone & build stable-diffusion.cpp (CPU-only, KleidiAI, ARMv9.2 SIMD)
+        if: steps.cache-sd.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p third_party
+          git clone --recursive https://github.com/leejet/stable-diffusion.cpp.git third_party/stable-diffusion.cpp
+          cd third_party/stable-diffusion.cpp
+          git checkout "${SD_CPP_COMMIT}" || true
+          git submodule update --init --recursive
 
           cmake -B build-android-arm64 -G Ninja \
             -DCMAKE_TOOLCHAIN_FILE="${ANDROID_NDK_HOME}/build/cmake/android.toolchain.cmake" \
@@ -137,7 +137,6 @@ jobs:
             -o ../app/src/main/jniLibs \
             build --release
 
-          # Bundle NDK libc++_shared.so required by llama.cpp and stable-diffusion.cpp
           cp "${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so" \
             ../app/src/main/jniLibs/arm64-v8a/
 
