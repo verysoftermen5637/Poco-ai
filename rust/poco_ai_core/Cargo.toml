@@ -23,6 +23,7 @@ hound = "3.5"
 
 # LLM Engine: llama.cpp Rust bindings (pinned 0.1.154: supports GGML_ env forwarding & GGML_CPU_ARM_ARCH on Android)
 llama-cpp-2 = { version = "=0.1.154", default-features = false }
+llama-cpp-sys-2 = { version = "=0.1.154", default-features = false }
 
 # Audio Engine: Native Rust Candle framework (CPU-only, pure-Rust fancy-regex tokenizer for Android cross-compile)
 candle-core = "0.9.2"
